@@ -1,5 +1,5 @@
 <script>
-  import { lint, editor, width } from "./stores.js";
+  import { fullscreen, mode, lint, editor, width } from "./stores.js";
   import CodeMirror from "codemirror";
   import Config from "./config.js";
   export let advancedModeOn;
@@ -59,6 +59,7 @@
   observeEditor("#editor");
 
   $: cm && cm.setOption("keyMap", $editor);
+  $: cm && cm.setOption("mode", $mode);
   $: cm && cm.setOption("lint", config.lintTypes[$lint]);
   $: {
     if (advancedModeOn) {
@@ -69,4 +70,25 @@
       unmount();
     }
   }
+  function handleClick() {
+    $fullscreen = false;
+  }
 </script>
+
+<style>
+  #exitFullScreenBtn {
+    position: fixed;
+    top: -10px;
+    left: 0;
+    color: red;
+    z-index: 5000;
+    background-color: rgba(1, 1, 1, 0);
+    border: none;
+    padding: 0;
+    margin: 0;
+  }
+</style>
+
+{#if $fullscreen}
+  <button id="exitFullScreenBtn" on:click={handleClick}>[X]</button>
+{/if}
