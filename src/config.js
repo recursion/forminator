@@ -1,59 +1,56 @@
-// Import CodeMirror addons/extensions
-// modes
-import "codemirror/mode/javascript/javascript";
-import "codemirror/mode/jsx/jsx";
-import "codemirror/mode/css";
-import "codemirror/mode/htmlmixed/htmlmixed";
-
-// keyMaps
-import "codemirror/keyMap/vim";
-import "codemirror/keyMap/sublime";
-import "codemirror/keyMap/emacs";
-
-// addons
-import "codemirror/addon/display/panel";
-import "codemirror/addon/lint/lint";
-
-// linters
-import "codemirror/addon/lint/javascript-lint";
-import "codemirror/addon/lint/css-lint";
+/*             config.js
+ * Exports a function that takes a CodeMirror instance
+ * and returns an object with several config objects and a list of lintTypes
+ *
+ * @param: CodeMirror - A CodeMirror instance.
+ * @returns { lintTypes: <string>, basic: {config}, vimproved: {config}}
+ *  {
+ *    lintTypes: An array of strings representing available linters
+ *    basic: A config object with some basic settings
+ *    vimproved: A config object with vim mode, javascript mode, and javascript linting
+ *  }
+ */
 
 export default function(CodeMirror) {
-  // default setup
-  const default_sublime = {
-    lineNumbers: true,
-    lineWrapping: true,
-    scrollbarStyle: null,
-    mode: "text/x-csrc",
-    mode: "javascript",
-    keyMap: "vim",
-    matchBrackets: true,
-    showCursorWhenSelecting: true,
-    inputStyle: "contenteditable",
-    gutters: ["CodeMirror-lint-markers"],
-    lint: [CodeMirror.lint.javascript],
-    theme: "cobalt"
-  };
-
-  // default vim setup
-  const default_vim = {
-    lineNumbers: true,
-    lineWrapping: true,
-    scrollbarStyle: null,
-    mode: "text/x-csrc",
-    mode: "javascript",
-    keyMap: "vim",
-    matchBrackets: true,
-    showCursorWhenSelecting: true,
-    inputStyle: "contenteditable",
-    gutters: ["CodeMirror-lint-markers"],
-    lint: [CodeMirror.lint.javascript],
-    theme: "cobalt"
-  };
-
+  // available linters
   const lintTypes = {
     javascript: CodeMirror.lint.javascript,
     css: CodeMirror.lint.css
   };
-  return { lintTypes, default_vim, default_sublime };
+
+  // default setup
+  const basic = {
+    lineNumbers: true,
+    lineWrapping: true,
+    scrollbarStyle: null,
+    matchBrackets: true,
+    showCursorWhenSelecting: true,
+    inputStyle: "contenteditable",
+    gutters: ["CodeMirror-lint-markers"]
+  };
+
+  // add basic javascript linting
+  const add_lint_javascript = {
+    lint: [CodeMirror.lint.javascript]
+  };
+
+  // vim keymap
+  const add_vim = {
+    keyMap: "vim"
+  };
+
+  // add javascript mode
+  const add_javascript = {
+    // mode: "text/x-csrc",
+    mode: "htmlmixed"
+  };
+
+  const vimproved = Object.assign(
+    basic,
+    add_lint_javascript,
+    add_vim,
+    add_javascript
+  );
+
+  return { lintTypes, basic, vimproved };
 }
