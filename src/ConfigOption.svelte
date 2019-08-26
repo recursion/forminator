@@ -13,7 +13,7 @@
   }
   select {
     padding: 0;
-    max-height: 25px;
+    max-height: 20px;
     margin: 0 10px 0 10px;
   }
   label {
@@ -30,7 +30,12 @@
       this.blur();
     }}>
     {#each data as d}
-      <option class="option" value={d}>{d.toUpperCase()}</option>
+      <option class="option" value={d}>
+        {d.length > 3 ? d
+              .slice(0, 1)
+              .toUpperCase()
+              .concat(d.slice(1)) : d.toUpperCase()}
+      </option>
     {/each}
   </select>
 </div>
