@@ -1,3 +1,10 @@
+<script>
+  import { fullscreen } from "./stores.js";
+  function clickHandler() {
+    $fullscreen = true;
+  }
+</script>
+
 <style>
   svg {
     background-color: #5a5a5a;
@@ -8,6 +15,8 @@
 </style>
 
 <svg
+  on:click={clickHandler}
+  id="maximize-btn"
   xmlns="http://www.w3.org/2000/svg"
   width="24"
   height="24"
