@@ -88,3 +88,7 @@ article {
 .CodeMirror {
 	height: 100%;
 }
+
+#maximize-btn:hover {
+	stroke: pink;
+}
