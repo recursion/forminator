@@ -1,22 +1,25 @@
 <script>
   import { onMount } from "svelte";
   import CodeMirror from "codemirror";
-  import Editor from "./Editor.svelte";
-  import { fullscreen, mode, width, lint, editor } from "./stores.js";
-  import PowerButton from "./PowerButton.svelte";
-  import MaximizeButton from "./MaximizeButton.svelte";
-  import UIBar from "./UIBar.svelte";
-  import ConfigOption from "./ConfigOption.svelte";
-  const modeTypes = ["javascript", "htmlmixed", "css", "jsx"];
-  const lintTypes = ["javascript", "css", "json"];
-  const editors = ["vim", "emacs", "sublime"];
-
-  let advancedModeOn = false;
+  import "./codeMirrorImports";
+  import Editor from "./Components/Editor.svelte";
+  import TopUIBar from "./Components/TopUIBar.svelte";
+  import BottomUIBar from "./Components/BottomUIBar.svelte";
+  import {
+    editSettings,
+    advancedModeOn,
+    fullscreen,
+    mode,
+    width,
+    lint,
+    editor
+  } from "./stores.js";
 
   function getCodeMirrorEl() {
     return document.querySelector(".CodeMirror");
   }
 
+  // wrap the editor with our own ui bars
   const wrapEditor = editor => {
     const row = document.createElement("div");
     row.className = "row";
@@ -31,6 +34,10 @@
     parent.appendChild(container);
   };
 
+  function btnCloseClickHandler() {
+    $editSettings = false;
+  }
+
   onMount(() => {
     wrapEditor(document.querySelector("#editor"));
   });
@@ -38,9 +45,11 @@
   $: if ($fullscreen) {
     var codeMirror = getCodeMirrorEl();
     if (codeMirror) {
+      document.querySelector(".CodeMirror").style.width = "100%";
+      document.querySelector(".CodeMirror").style.height = "100%";
       codeMirror.classList.add("CodeMirror-fullscreen");
     }
-  } else if (!$fullscreen) {
+  } else {
     var codeMirror = getCodeMirrorEl();
     if (codeMirror) {
       codeMirror.classList.remove("CodeMirror-fullscreen");
@@ -48,53 +57,12 @@
   }
 </script>
 
-<style>
-  .spacer {
-    width: 24px;
-  }
-  .column.config {
-    display: flex;
-    flex-direction: row;
-    text-align: right;
-    justify-content: flex-end;
-    padding: 1px;
-  }
-  .column.tools {
-    padding: 1px;
-  }
-  div.column {
-    display: flex;
-    align-items: center;
-  }
-</style>
-
 <div class="forminator container">
-  <UIBar position="top" active={advancedModeOn}>
-    {#if advancedModeOn}
-      <div class="column tools">
-        <MaximizeButton />
-      </div>
-    {/if}
-    <div class="column config">
-      {#if advancedModeOn}
-        <ConfigOption data={editors} store={editor} title="Editor" />
-      {/if}
-      <PowerButton
-        power={advancedModeOn}
-        toggle={() => (advancedModeOn = !advancedModeOn)} />
-    </div>
-  </UIBar>
+  <TopUIBar />
   <div class="row">
-    <Editor {advancedModeOn} />
+    <Editor />
   </div>
-  {#if advancedModeOn}
-    <UIBar position="bottom" active={advancedModeOn}>
-      <div class="column" />
-      <div class="column config">
-        <ConfigOption data={lintTypes} store={lint} title="Linting" />
-        <ConfigOption data={modeTypes} store={mode} title="Mode" />
-        <div class="spacer" />
-      </div>
-    </UIBar>
+  {#if $advancedModeOn}
+    <BottomUIBar />
   {/if}
 </div>
