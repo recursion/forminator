@@ -15,6 +15,7 @@
     editor
   } from "./stores.js";
 
+  // retunrs the codemirror dom element, if it exists
   function getCodeMirrorEl() {
     return document.querySelector(".CodeMirror");
   }
@@ -34,14 +35,17 @@
     parent.appendChild(container);
   };
 
+  // handle close edit settings button
   function btnCloseClickHandler() {
     $editSettings = false;
   }
 
+  // wrap the editor element in some custom UI
   onMount(() => {
     wrapEditor(document.querySelector("#editor"));
   });
 
+  // handle fullscreen changes
   $: if ($fullscreen) {
     var codeMirror = getCodeMirrorEl();
     if (codeMirror) {
