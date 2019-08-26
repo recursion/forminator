@@ -8,15 +8,17 @@
 <style>
   .ui-bar {
     max-height: 30px;
-  }
-  .offset {
-    margin-left: 10px;
+    border: 1px solid black;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 0;
+    width: 100%;
   }
 </style>
 
 <div
-  class="row ui-bar {position}
-  {active ? '' : 'offset'}"
-  style="width: {$width};">
+  class="row ui-bar {position}"
+  style="width: {$width}; border: {active ? '1px solid black' : 'none'}">
   <slot />
 </div>
