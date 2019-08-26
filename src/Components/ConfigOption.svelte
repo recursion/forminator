@@ -2,7 +2,11 @@
   export let data;
   export let store;
   export let title;
-  let t;
+  let storeValue;
+  let unsubscribe = store.subscribe(v => {
+    console.log("--->", v);
+    storeValue = v;
+  });
 </script>
 
 <style>
@@ -23,12 +27,7 @@
 
 <div class="config-option">
   <label>{title}</label>
-  <select
-    bind:value={$store}
-    on:change={function() {
-      t = '';
-      this.blur();
-    }}>
+  <select bind:value={storeValue} on:change={function() {}}>
     {#each data as d}
       <option class="option" value={d}>
         {d.length > 3 ? d
