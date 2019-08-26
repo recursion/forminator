@@ -1,6 +1,6 @@
 <script>
   import { onMount } from "svelte";
-  import { width } from "./stores.js";
+  import { width } from "../stores.js";
   export let position;
   export let active;
 </script>
