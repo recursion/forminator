@@ -1,15 +1,13 @@
 <script>
   let tooltipLocation;
-  let container;
+  let btn;
   import { fullscreen } from "../stores.js";
-  function clickHandler() {
-    $fullscreen = true;
-  }
-  $: if (container) {
+
+  $: if (btn) {
     // calculate the class to used base on the elements locational relationship to window edges.
     let str = "";
     const offsetLimit = 300;
-    const d = container.getBoundingClientRect();
+    const d = btn.getBoundingClientRect();
     if (d.top < offsetLimit) {
       str += " bottom";
     } else if (window.height - d.bottom < offsetLimit) {
@@ -44,8 +42,8 @@
     {$fullscreen ? '' : 'View in fullscreen.'}
   </span>
   <svg
-    bind:this={container}
-    on:click={clickHandler}
+    on:click={() => ($fullscreen = true)}
+    bind:this={btn}
     id="maximize-btn"
     xmlns="http://www.w3.org/2000/svg"
     width="24"
