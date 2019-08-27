@@ -4,6 +4,22 @@ Add's 'incognito' CodeMirror functionality to any textarea.
 Create a new svelte app, and pass the node you want handled by codemirror.
 You can target multiple nodes, but each node should have it's own app instance.
 
+TODO:
+
+- [ ] Streamline State/Settings Stores
+- [ ] Implement saving settings/state to localStorage
+- [ ] Modularize / Code Cleanup.
+- [ ] Format On Save.
+- [ ] More Linting Options
+- [ ] More Settings options (Line Numbers, Themes, Light/Dark mode etc)
+
+IDEAS:
+
+- [ ] Versioning / Rollbacks (Create a version history / git like system for saving iterations on code)
+- [ ] Search and Replace Options (We enter what we are searching for _</head>_ - and the editor will add the replacement tag to the end of our script)
+
+### Project Starter Info:
+
 Created using a project template for [Svelte](https://svelte.dev) apps. It lives at https://github.com/sveltejs/template.
 
 To create a new project based on this template using [degit](https://github.com/Rich-Harris/degit):
