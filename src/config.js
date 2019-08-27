@@ -49,9 +49,14 @@ const add_javascript = {
   mode: "htmlmixed"
 };
 
+const add_cobalt_theme = {
+  theme: "cobalt"
+};
+
 export const vimproved = Object.assign(
   basic,
   add_lint_javascript,
   add_vim,
-  add_javascript
+  add_javascript,
+  add_cobalt_theme
 );
