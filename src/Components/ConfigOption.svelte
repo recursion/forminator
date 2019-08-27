@@ -1,12 +1,9 @@
 <script>
-  export let data;
+  export let options;
   export let store;
   export let title;
+  export let update;
   let storeValue;
-  let unsubscribe = store.subscribe(v => {
-    console.log("--->", v);
-    storeValue = v;
-  });
 </script>
 
 <style>
@@ -27,13 +24,13 @@
 
 <div class="config-option">
   <label>{title}</label>
-  <select bind:value={storeValue} on:change={function() {}}>
-    {#each data as d}
-      <option class="option" value={d}>
-        {d.length > 3 ? d
+  <select bind:value={storeValue} on:change={t => update(t.target.value)}>
+    {#each options as o}
+      <option class="option" value={o}>
+        {o.length > 3 ? o
               .slice(0, 1)
               .toUpperCase()
-              .concat(d.slice(1)) : d.toUpperCase()}
+              .concat(o.slice(1)) : o.toUpperCase()}
       </option>
     {/each}
   </select>
