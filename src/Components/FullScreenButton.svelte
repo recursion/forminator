@@ -1,7 +1,27 @@
 <script>
+  let tooltipLocation;
+  let container;
   import { fullscreen } from "../stores.js";
   function clickHandler() {
     $fullscreen = true;
+  }
+  $: if (container) {
+    // calculate the class to used base on the elements locational relationship to window edges.
+    let str = "";
+    const offsetLimit = 300;
+    const d = container.getBoundingClientRect();
+    if (d.top < offsetLimit) {
+      str += " bottom";
+    } else if (window.height - d.bottom < offsetLimit) {
+      str += " top";
+    }
+
+    if (d.left < offsetLimit) {
+      str += " right";
+    } else if (window.innerWidth - d.right < offsetLimit) {
+      str += " left";
+    }
+    tooltipLocation = str;
   }
 </script>
 
@@ -13,11 +33,18 @@
     align-self: flex-start;
     vertical-align: bottom;
   }
+
+  .tooltip:hover .tooltiptext {
+    z-index: 500;
+  }
 </style>
 
 <div class="tooltip">
-  <span class="tooltiptext">{$fullscreen ? '' : 'View in fullscreen.'}</span>
+  <span class="tooltiptext {tooltipLocation}">
+    {$fullscreen ? '' : 'View in fullscreen.'}
+  </span>
   <svg
+    bind:this={container}
     on:click={clickHandler}
     id="maximize-btn"
     xmlns="http://www.w3.org/2000/svg"
