@@ -17,6 +17,7 @@
 .tooltip .tooltiptext {
 	display: none;
 	width: 220px;
+	height: 40px;
 	font-size: 12pt;
 	background-color: rgba(0, 0, 0, 0.5);
 	color: #fff;
@@ -27,11 +28,26 @@
 	/* Position the tooltip text - see examples below! */
 	position: absolute;
 	z-index: 1;
-	right: 105%;
-	bottom: 50%;
 	transition: all 1s ease-out;
+	right: 50px;
 }
 
 .tooltip:hover .tooltiptext {
 	display: block;
+}
+
+.right {
+	left: 105%;
+}
+
+.left {
+	right: 105%;
+}
+
+.top {
+	bottom: 105%;
+}
+
+.bottom {
+	top: 50%;
 }
