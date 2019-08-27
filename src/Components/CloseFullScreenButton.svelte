@@ -4,10 +4,12 @@
 
   $: if ($fullscreen) {
     setTimeout(() => {
+      if (!btn) return;
       btn.style.stroke = "white";
       btn.style.fill = "rgba(0, 0, 0, 0.5)";
     }, 250);
     setTimeout(() => {
+      if (!btn) return;
       btn.style.stroke = "white";
       btn.style.fill = "none";
     }, 2000);
