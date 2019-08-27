@@ -3,7 +3,6 @@
   export let store;
   export let title;
   export let update;
-  let storeValue;
 </script>
 
 <style>
@@ -24,7 +23,9 @@
 
 <div class="config-option">
   <label>{title}</label>
-  <select bind:value={storeValue} on:change={t => update(t.target.value)}>
+  <select
+    bind:value={store}
+    on:change={t => update(t.target.value.toLowerCase())}>
     {#each options as o}
       <option class="option" value={o}>
         {o.length > 3 ? o
