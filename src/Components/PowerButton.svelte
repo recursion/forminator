@@ -47,7 +47,7 @@
   .incognito {
     background-color: rgba(155, 155, 155, 0.2);
     position: absolute;
-    right: 15px;
+    right: 1px;
     top: 1px;
   }
   .tooltip:hover .tooltiptext {
