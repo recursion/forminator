@@ -1,4 +1,5 @@
 <script>
+  export let textarea;
   import { fade } from "svelte/transition";
   import CodeMirror from "codemirror";
   import CloseFullScreenButton from "./CloseFullScreenButton.svelte";
@@ -29,14 +30,14 @@
 
   // update the width setting when one of our editor windows changes
   const updateEditorWidth = () => {
-    const el = getCodeMirrorEl() || document.querySelector("#editor");
+    const el = getCodeMirrorEl() || textarea;
     $width = el.style.width;
   };
 
   // Attach an observer to our editor so we can capture mutation events
-  const observeEditor = selector => {
+  const observeEditor = node => {
     observer = new MutationObserver(updateEditorWidth);
-    observer.observe(document.querySelector(selector), {
+    observer.observe(node, {
       attributes: true,
       childList: true,
       characterData: true,
@@ -50,25 +51,23 @@
       // if we already have a codeMirror instance, dont create a new one....
       if (cm) return;
 
-      // select the original editor, the bottom ui-bar, and the parent container
-      const og_editor = document.querySelector("#editor");
       const lowerbar = document.querySelector(".ui-bar.bottom");
       const container = document.querySelector(".container");
 
       // instantiate CodeMirror from our existing text area
-      cm = CodeMirror.fromTextArea(og_editor, vimproved);
+      cm = CodeMirror.fromTextArea(textarea, vimproved);
 
       // set the codemirror wrapper width and height to the original textAreas width and height
-      getCodeMirrorEl().style.width = og_editor.style.width;
-      getCodeMirrorEl().style.height = og_editor.style.height;
+      getCodeMirrorEl().style.width = textarea.style.width;
+      getCodeMirrorEl().style.height = textarea.style.height;
 
       // Give CodeMirror enough time to mount
       // and then move it, and attach a mutation observer to it.
       setTimeout(() => {
         const newEditor = getCodeMirrorEl();
         container.insertBefore(newEditor, lowerbar);
-        observeEditor(".CodeMirror");
-      }, 25);
+        observeEditor(newEditor);
+      }, 50);
     } catch (e) {
       console.log(e);
     }
@@ -125,7 +124,7 @@
   }
 
   // set up an observer on the original textarea
-  observeEditor("#editor");
+  observeEditor(textarea);
 </script>
 
 <style>

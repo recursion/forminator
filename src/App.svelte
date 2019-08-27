@@ -32,7 +32,7 @@
 
 <div class="forminator container">
   <TopUIBar />
-  <Editor />
+  <Editor {textarea} />
   {#if $advancedModeOn}
     <BottomUIBar />
   {/if}
