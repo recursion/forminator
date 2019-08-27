@@ -19,8 +19,8 @@
       console.error("Container not found.");
       return;
     }
+    parent.insertBefore(container, editor);
     container.insertBefore(editor, lowerbar);
-    parent.appendChild(container);
   });
 </script>
 
