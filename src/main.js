@@ -7,4 +7,7 @@ const app = new App({
   }
 });
 
+// for production we want to expose App globally
+// window.forminator = App;
+
 export default app;
