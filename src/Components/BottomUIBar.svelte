@@ -23,13 +23,13 @@
   <div class="column column-100 config">
     <ConfigOption
       options={lintTypes}
-      store={lint}
+      store={$lint}
       title="Linting"
-      update={v => ($lint = v.toLowerCase())} />
+      update={v => ($lint = v)} />
     <ConfigOption
       options={modeTypes}
-      store={mode}
+      store={$mode}
       title="Mode"
-      update={v => ($mode = v.toLowerCase())} />
+      update={v => ($mode = v)} />
   </div>
 </UIBar>

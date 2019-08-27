@@ -1,26 +1,7 @@
 <script>
-  let tooltipLocation;
   let btn;
   import { fullscreen } from "../stores.js";
-
-  $: if (btn) {
-    // calculate the class to used base on the elements locational relationship to window edges.
-    let str = "";
-    const offsetLimit = 300;
-    const d = btn.getBoundingClientRect();
-    if (d.top < offsetLimit) {
-      str += " bottom";
-    } else if (window.height - d.bottom < offsetLimit) {
-      str += " top";
-    }
-
-    if (d.left < offsetLimit) {
-      str += " right";
-    } else if (window.innerWidth - d.right < offsetLimit) {
-      str += " left";
-    }
-    tooltipLocation = str;
-  }
+  import { getToolTipLocation } from "../Hooks/TooltipLocator.svelte";
 </script>
 
 <style>
@@ -38,7 +19,7 @@
 </style>
 
 <div class="tooltip">
-  <span class="tooltiptext {tooltipLocation}">
+  <span class="tooltiptext {btn && getToolTipLocation(btn)}">
     {$fullscreen ? '' : 'View in fullscreen.'}
   </span>
   <svg
