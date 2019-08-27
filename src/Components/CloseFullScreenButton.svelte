@@ -1,11 +1,23 @@
 <script>
   import { fullscreen } from "../stores.js";
+  let btn;
+
+  $: if ($fullscreen) {
+    setTimeout(() => {
+      btn.style.stroke = "white";
+      btn.style.fill = "rgba(0, 0, 0, 0.5)";
+    }, 250);
+    setTimeout(() => {
+      btn.style.stroke = "white";
+      btn.style.fill = "none";
+    }, 2000);
+  }
 </script>
 
 <style>
   #exitFullScreenBtn:hover {
-    color: rgba(255, 0, 0, 1);
-    background-color: white;
+    stroke: black !important;
+    fill: white !important;
   }
   #exitFullScreenBtn {
     position: fixed;
@@ -18,8 +30,8 @@
     transition: all 3s;
     width: 32px;
     height: 32px;
-    color: rgba(255, 0, 0, 0);
-    background-color: rgba(1, 1, 1, 0);
+    stroke: rgba(150, 150, 150, 0.1) !important;
+    fill: white !important;
   }
   .container {
     background: none;
@@ -34,14 +46,13 @@
 
 <div class="container">
   <svg
+    bind:this={btn}
     on:click={() => ($fullscreen = false)}
     id="exitFullScreenBtn"
     xmlns="http://www.w3.org/2000/svg"
     width="24"
     height="24"
     viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
     stroke-width="2"
     stroke-linecap="round"
     stroke-linejoin="round"

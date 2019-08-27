@@ -1,5 +1,5 @@
 <script>
-  export let selector;
+  export let textarea;
   import { onMount } from "svelte";
   import CodeMirror from "codemirror";
   import "./codeMirrorImports";
@@ -10,7 +10,7 @@
 
   onMount(() => {
     // wrap the editor element in some custom UI
-    const editor = document.querySelector(selector);
+    const editor = textarea;
     const parent = editor.parentNode;
     const lowerbar = document.querySelector("ui-bar.bottom");
     const container = document.querySelector(".forminator.container");
@@ -23,6 +23,12 @@
     parent.appendChild(container);
   });
 </script>
+
+<style>
+  .forminator {
+    padding: 0;
+  }
+</style>
 
 <div class="forminator container">
   <TopUIBar />

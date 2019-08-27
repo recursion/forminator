@@ -1,7 +1,8 @@
 <script>
+  import { fade } from "svelte/transition";
   import CodeMirror from "codemirror";
-  import CloseFullScreenIcon from "./CloseFullScreenIcon.svelte";
-  import Config from "../config.js";
+  import CloseFullScreenButton from "./CloseFullScreenButton.svelte";
+  import { vimproved, linters } from "../config.js";
   import {
     advancedModeOn,
     fullscreen,
@@ -13,20 +14,22 @@
 
   let observer;
   let cm;
-
-  // check settings and see which config to use?
-  const { vimproved, lintTypes } = Config(CodeMirror);
+  let notification;
+  let notified;
 
   // set our initial store values based on the config
   $editor = vimproved.keyMap;
   $lint = vimproved.lint;
   $mode = vimproved.mode;
 
+  // retunrs the codemirror dom element, if it exists
+  function getCodeMirrorEl() {
+    return document.querySelector(".CodeMirror");
+  }
+
   // update the width setting when one of our editor windows changes
   const updateEditorWidth = () => {
-    const el =
-      document.querySelector(".CodeMirror") ||
-      document.querySelector("#editor");
+    const el = getCodeMirrorEl() || document.querySelector("#editor");
     $width = el.style.width;
   };
 
@@ -56,14 +59,13 @@
       cm = CodeMirror.fromTextArea(og_editor, vimproved);
 
       // set the codemirror wrapper width and height to the original textAreas width and height
-      document.querySelector(".CodeMirror").style.width = og_editor.style.width;
-      document.querySelector(".CodeMirror").style.height =
-        og_editor.style.height;
+      getCodeMirrorEl().style.width = og_editor.style.width;
+      getCodeMirrorEl().style.height = og_editor.style.height;
 
       // Give CodeMirror enough time to mount
       // and then move it, and attach a mutation observer to it.
       setTimeout(() => {
-        const newEditor = document.querySelector(".CodeMirror");
+        const newEditor = getCodeMirrorEl();
         container.insertBefore(newEditor, lowerbar);
         observeEditor(".CodeMirror");
       }, 25);
@@ -80,15 +82,10 @@
     }
   };
 
-  // retunrs the codemirror dom element, if it exists
-  function getCodeMirrorEl() {
-    return document.querySelector(".CodeMirror");
-  }
-
   // Update our options when they change
   $: cm && cm.setOption("keyMap", $editor);
   $: cm && cm.setOption("mode", $mode);
-  $: cm && cm.setOption("lint", lintTypes[$lint]);
+  $: cm && cm.setOption("lint", linters[$lint]);
 
   // mount and unmount when we toggle advancedModeOn flag
   $: {
@@ -100,12 +97,24 @@
       unmount();
     }
   }
+
   // handle fullscreen changes
   $: if ($fullscreen) {
+    // unhide the 'how-to minimize' notification
+    // set a timer to rehide it
+    // only notify once
+    if (!notified) {
+      notification.style.display = "block";
+      setTimeout(() => {
+        notification.style.display = "none";
+      }, 2000);
+      notified = true;
+    }
+
     var codeMirror = getCodeMirrorEl();
     if (codeMirror) {
-      document.querySelector(".CodeMirror").style.width = "100%";
-      document.querySelector(".CodeMirror").style.height = "100%";
+      codeMirror.style.width = "100%";
+      codeMirror.style.height = "100%";
       codeMirror.classList.add("CodeMirror-fullscreen");
     }
   } else {
@@ -115,9 +124,33 @@
     }
   }
 
+  // set up an observer on the original textarea
   observeEditor("#editor");
 </script>
 
+<style>
+  .notification {
+    display: none;
+    padding: 1em;
+    width: 500px;
+    height: 200px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    position: fixed;
+    top: 5%;
+    left: 50%;
+    transform: translate(-50%);
+    z-index: 5000;
+    font-size: 1.25em;
+    font-weight: bold;
+    border-radius: 5px;
+  }
+</style>
+
+<div bind:this={notification} transition:fade class="notification">
+  Click the button in the upper right corner to exit fullscreen.
+</div>
+
 {#if $fullscreen}
-  <CloseFullScreenIcon />
+  <CloseFullScreenButton />
 {/if}
