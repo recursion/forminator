@@ -1,5 +1,6 @@
 <script>
   import CodeMirror from "codemirror";
+  import CloseFullScreenIcon from "./CloseFullScreenIcon.svelte";
   import Config from "../config.js";
   import {
     advancedModeOn,
@@ -14,7 +15,7 @@
   let cm;
 
   // check settings and see which config to use?
-  const { vimproved } = Config(CodeMirror);
+  const { vimproved, lintTypes } = Config(CodeMirror);
 
   // set our initial store values based on the config
   $editor = vimproved.keyMap;
@@ -79,14 +80,15 @@
     }
   };
 
-  // TODO: Determine which editor is saved to settings
-  // and observer that one
-  observeEditor("#editor");
+  // retunrs the codemirror dom element, if it exists
+  function getCodeMirrorEl() {
+    return document.querySelector(".CodeMirror");
+  }
 
   // Update our options when they change
   $: cm && cm.setOption("keyMap", $editor);
   $: cm && cm.setOption("mode", $mode);
-  $: cm && cm.setOption("lint", config.lintTypes[$lint]);
+  $: cm && cm.setOption("lint", lintTypes[$lint]);
 
   // mount and unmount when we toggle advancedModeOn flag
   $: {
@@ -98,34 +100,24 @@
       unmount();
     }
   }
-
-  // handle close fullscreen click
-  function handleClick() {
-    $fullscreen = false;
+  // handle fullscreen changes
+  $: if ($fullscreen) {
+    var codeMirror = getCodeMirrorEl();
+    if (codeMirror) {
+      document.querySelector(".CodeMirror").style.width = "100%";
+      document.querySelector(".CodeMirror").style.height = "100%";
+      codeMirror.classList.add("CodeMirror-fullscreen");
+    }
+  } else {
+    var codeMirror = getCodeMirrorEl();
+    if (codeMirror) {
+      codeMirror.classList.remove("CodeMirror-fullscreen");
+    }
   }
+
+  observeEditor("#editor");
 </script>
 
-<style>
-  #exitFullScreenBtn:hover {
-    color: rgba(255, 0, 0, 1);
-  }
-  #exitFullScreenBtn {
-    position: fixed;
-    top: -10px;
-    right: 0;
-    color: rgba(255, 0, 0, 0);
-    z-index: 5000;
-    background-color: rgba(1, 1, 1, 0);
-    border: none;
-    padding: 0;
-    margin: 0;
-    transition: color 3s;
-    width: 100px;
-    height: 100px;
-    font-size: 20pt;
-  }
-</style>
-
 {#if $fullscreen}
-  <button id="exitFullScreenBtn" on:click={handleClick}>[X]</button>
+  <CloseFullScreenIcon />
 {/if}
