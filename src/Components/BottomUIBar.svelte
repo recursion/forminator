@@ -8,9 +8,6 @@
 </script>
 
 <style>
-  .spacer {
-    width: 24px;
-  }
   .column.config {
     display: flex;
     flex-direction: row;
@@ -25,10 +22,16 @@
 </style>
 
 <UIBar position="bottom" active={$advancedModeOn}>
-  <div class="column" />
-  <div class="column config">
-    <ConfigOption data={lintTypes} store={lint} title="Linting" />
-    <ConfigOption data={modeTypes} store={mode} title="Mode" />
-    <div class="spacer" />
+  <div class="column column-100 config">
+    <ConfigOption
+      options={lintTypes}
+      store={lint}
+      title="Linting"
+      update={v => ($lint = v.toLowerCase())} />
+    <ConfigOption
+      options={modeTypes}
+      store={mode}
+      title="Mode"
+      update={v => ($mode = v.toLowerCase())} />
   </div>
 </UIBar>
