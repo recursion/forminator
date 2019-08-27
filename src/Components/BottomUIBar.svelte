@@ -1,10 +1,8 @@
 <script>
   import UIBar from "./UIBar.svelte";
   import ConfigOption from "./ConfigOption.svelte";
-
+  import { lintTypes, modeTypes } from "../config";
   import { advancedModeOn, mode, lint } from "../stores.js";
-  const modeTypes = ["javascript", "htmlmixed", "css", "jsx", "none"];
-  const lintTypes = ["javascript", "css", "json", "none"];
 </script>
 
 <style>

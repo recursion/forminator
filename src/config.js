@@ -10,47 +10,48 @@
  *    vimproved: A config object with vim mode, javascript mode, and javascript linting
  *  }
  */
+import CodeMirror from "codemirror";
 
-export default function(CodeMirror) {
-  // available linters
-  const lintTypes = {
-    javascript: CodeMirror.lint.javascript,
-    css: CodeMirror.lint.css
-  };
+export const editors = ["vim", "emacs", "sublime"];
+export const modeTypes = ["javascript", "htmlmixed", "css", "jsx"];
+export const lintTypes = ["javascript", "css", "json"];
 
-  // default setup
-  const basic = {
-    lineNumbers: true,
-    lineWrapping: true,
-    scrollbarStyle: null,
-    matchBrackets: true,
-    showCursorWhenSelecting: true,
-    inputStyle: "contenteditable",
-    gutters: ["CodeMirror-lint-markers"]
-  };
+// available linters
+export const linters = {
+  javascript: CodeMirror.lint.javascript,
+  css: CodeMirror.lint.css
+};
 
-  // add basic javascript linting
-  const add_lint_javascript = {
-    lint: [CodeMirror.lint.javascript]
-  };
+// default setup
+export const basic = {
+  lineNumbers: true,
+  lineWrapping: true,
+  scrollbarStyle: null,
+  matchBrackets: true,
+  showCursorWhenSelecting: true,
+  inputStyle: "contenteditable",
+  gutters: ["CodeMirror-lint-markers"]
+};
 
-  // vim keymap
-  const add_vim = {
-    keyMap: "vim"
-  };
+// add basic javascript linting
+const add_lint_javascript = {
+  lint: [CodeMirror.lint.javascript]
+};
 
-  // add javascript mode
-  const add_javascript = {
-    // mode: "text/x-csrc",
-    mode: "htmlmixed"
-  };
+// vim keymap
+const add_vim = {
+  keyMap: "vim"
+};
 
-  const vimproved = Object.assign(
-    basic,
-    add_lint_javascript,
-    add_vim,
-    add_javascript
-  );
+// add javascript mode
+const add_javascript = {
+  // mode: "text/x-csrc",
+  mode: "htmlmixed"
+};
 
-  return { lintTypes, basic, vimproved };
-}
+export const vimproved = Object.assign(
+  basic,
+  add_lint_javascript,
+  add_vim,
+  add_javascript
+);

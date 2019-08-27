@@ -4,6 +4,7 @@
   import SettingsIcon from "./SettingsIcon.svelte";
   import PowerButton from "./PowerButton.svelte";
   import FullscreenButton from "./FullscreenButton.svelte";
+  import { editors } from "../config";
   import {
     advancedModeOn,
     editSettings,
@@ -13,7 +14,6 @@
     lint,
     editor
   } from "../stores.js";
-  const editors = ["vim", "emacs", "sublime"];
 </script>
 
 <style>
