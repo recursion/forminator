@@ -1,6 +1,10 @@
 import App from "./App.svelte";
+
 const app = new App({
-  target: document.body
+  target: document.body,
+  props: {
+    selector: "#editor"
+  }
 });
 
 export default app;
