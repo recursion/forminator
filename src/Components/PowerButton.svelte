@@ -8,6 +8,14 @@
   let container;
   let tooltipLocation;
 
+  // return true if the element has a scrollbar
+  $: hasScrollBar =
+    container &&
+    (container.style.overflow !== "hidden" ||
+      container.scrollHeight > container.clientHeight)
+      ? true
+      : false;
+
   function clickHandler() {
     const t = $advancedModeOn;
     $advancedModeOn = !t;
@@ -63,17 +71,23 @@
     border-radius: 25%;
     vertical-align: bottom;
     margin: 2px auto;
-    transition: all 3s ease-out;
+    transition: background-color 3s ease-out;
+    background-color: rgba(155, 155, 155, 0.5);
   }
   svg:hover {
-    background-color: #5a5a5a !important;
-    stroke: lightgreen;
+    background-color: rgba(155, 155, 155, 1);
   }
   .incognito {
     background-color: rgba(155, 155, 155, 0.2);
     position: absolute;
     right: 17px;
     top: 1px;
+  }
+  .offsetScrollbar {
+    right: 20px;
+  }
+  .offset {
+    right: 12px;
   }
   .tooltip:hover .tooltiptext {
     z-index: 500;
@@ -99,7 +113,8 @@
     stroke-linecap="round"
     stroke-linejoin="round"
     class="feather feather-power {$advancedModeOn ? 'poweredOn' : ''}
-    {$advancedModeOn ? '' : 'incognito'}">
+    {$advancedModeOn ? '' : 'incognito'}
+    {!$advancedModeOn && hasScrollBar ? 'offsetScrollbar' : 'offset'}">
     <path d="M18.36 6.64a9 9 0 1 1-12.73 0" />
     <line x1="12" y1="2" x2="12" y2="12" />
   </svg>
