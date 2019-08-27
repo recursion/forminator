@@ -43,9 +43,9 @@
     {#if $advancedModeOn && $editSettings}
       <ConfigOption
         options={editors}
-        store={editor}
+        store={$editor}
         title="Editor"
-        update={v => ($editor = v.toLowerCase())} />
+        update={v => ($editor = v)} />
       <SettingsIcon toggle={() => ($editSettings = !$editSettings)} />
     {:else if $advancedModeOn}
       <SettingsIcon toggle={() => ($editSettings = !$editSettings)} />
