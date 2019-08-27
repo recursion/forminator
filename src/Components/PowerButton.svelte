@@ -5,6 +5,8 @@
   let hover = false;
   let color = "currentColor";
   const onColor = "lightgreen";
+  let container;
+  let tooltipLocation;
 
   function clickHandler() {
     const t = $advancedModeOn;
@@ -34,6 +36,24 @@
       }
     }
   }
+  $: if (container) {
+    // calculate the class to used base on the elements locational relationship to window edges.
+    let str = "";
+    const offsetLimit = 100;
+    const d = container.getBoundingClientRect();
+    if (d.top < offsetLimit) {
+      str += " bottom";
+    } else if (window.height - d.bottom < offsetLimit) {
+      str += " top";
+    }
+
+    if (d.left < offsetLimit) {
+      str += " right";
+    } else if (window.innerWidth - d.right < offsetLimit) {
+      str += " left";
+    }
+    tooltipLocation = str;
+  }
 </script>
 
 <style>
@@ -55,13 +75,17 @@
     right: 17px;
     top: 1px;
   }
+  .tooltip:hover .tooltiptext {
+    z-index: 500;
+  }
 </style>
 
 <div class="tooltip">
-  <span class="tooltiptext">
+  <span class="tooltiptext {tooltipLocation}">
     Turn {$advancedModeOn ? 'off' : 'on'} the advanced editor.
   </span>
   <svg
+    bind:this={container}
     on:click={clickHandler}
     on:mouseover={mouseover}
     on:mouseout={mouseout}

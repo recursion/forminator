@@ -41,7 +41,11 @@
   {/if}
   <div class="column config">
     {#if $advancedModeOn && $editSettings}
-      <ConfigOption data={editors} store={editor} title="Editor" />
+      <ConfigOption
+        options={editors}
+        store={editor}
+        title="Editor"
+        update={v => ($editor = v.toLowerCase())} />
       <SettingsIcon toggle={() => ($editSettings = !$editSettings)} />
     {:else if $advancedModeOn}
       <SettingsIcon toggle={() => ($editSettings = !$editSettings)} />
