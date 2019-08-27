@@ -1,33 +1,18 @@
 <script>
   import { advancedModeOn } from "../stores.js";
+  import { getToolTipLocation } from "../Hooks/TooltipLocator.svelte";
 
-  let style;
   let hover = false;
   let color = "currentColor";
   const onColor = "lightgreen";
-  let container;
   let tooltipLocation;
-
-  // return true if the element has a scrollbar
-  $: hasScrollBar =
-    container &&
-    (container.style.overflow !== "hidden" ||
-      container.scrollHeight > container.clientHeight)
-      ? true
-      : false;
+  let container;
+  let style;
 
   function clickHandler() {
     const t = $advancedModeOn;
     $advancedModeOn = !t;
   }
-
-  const mouseover = () => {
-    hover = true;
-  };
-
-  const mouseout = () => {
-    hover = false;
-  };
 
   $: {
     if (hover) {
@@ -43,24 +28,6 @@
         color = "white";
       }
     }
-  }
-  $: if (container) {
-    // calculate the class to used base on the elements locational relationship to window edges.
-    let str = "";
-    const offsetLimit = 100;
-    const d = container.getBoundingClientRect();
-    if (d.top < offsetLimit) {
-      str += " bottom";
-    } else if (window.height - d.bottom < offsetLimit) {
-      str += " top";
-    }
-
-    if (d.left < offsetLimit) {
-      str += " right";
-    } else if (window.innerWidth - d.right < offsetLimit) {
-      str += " left";
-    }
-    tooltipLocation = str;
   }
 </script>
 
@@ -80,14 +47,8 @@
   .incognito {
     background-color: rgba(155, 155, 155, 0.2);
     position: absolute;
-    right: 17px;
+    right: 15px;
     top: 1px;
-  }
-  .offsetScrollbar {
-    right: 20px;
-  }
-  .offset {
-    right: 12px;
   }
   .tooltip:hover .tooltiptext {
     z-index: 500;
@@ -95,14 +56,14 @@
 </style>
 
 <div class="tooltip">
-  <span class="tooltiptext {tooltipLocation}">
+  <span class="tooltiptext {container && getToolTipLocation(container)}">
     Turn {$advancedModeOn ? 'off' : 'on'} the advanced editor.
   </span>
   <svg
     bind:this={container}
     on:click={clickHandler}
-    on:mouseover={mouseover}
-    on:mouseout={mouseout}
+    on:mouseover={() => (hover = true)}
+    on:mouseout={() => (hover = false)}
     xmlns="http://www.w3.org/2000/svg"
     width="24"
     height="24"
@@ -113,8 +74,7 @@
     stroke-linecap="round"
     stroke-linejoin="round"
     class="feather feather-power {$advancedModeOn ? 'poweredOn' : ''}
-    {$advancedModeOn ? '' : 'incognito'}
-    {!$advancedModeOn && hasScrollBar ? 'offsetScrollbar' : 'offset'}">
+    {$advancedModeOn ? '' : 'incognito'}">
     <path d="M18.36 6.64a9 9 0 1 1-12.73 0" />
     <line x1="12" y1="2" x2="12" y2="12" />
   </svg>
